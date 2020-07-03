@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class HelloController {
 
-	@Autowired
-    MessageSource messageSource;
 
     /**
      * @return Hello World!
@@ -34,15 +32,5 @@ public class HelloController {
         return "Hello World!";
     }
 
-    @GetMapping("/")
-    public String index(Locale locale) {
-        return messageSource.getMessage("ola", null, locale);
-    }
    
-    @GetMapping("/msg")
-    public String getMessage(@RequestParam("msg") String msg) {
-    	 Locale locale = LocaleContextHolder.getLocale();
-    	 System.out.println("aqui p locale" + locale.getCountry());
-       return messageSource.getMessage(msg, null, locale);
-    }
 }
