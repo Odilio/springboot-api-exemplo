@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.unisoma.model.Readjustment;
-import com.unisoma.model.dto.ReadjustmentDTO;
 import com.unisoma.repository.ReadjustmentRepository;
 
 @Service
@@ -32,22 +31,11 @@ public class ReadjustmentService {
     			 readjustmentRepository.findBySalary(salary);
     	 
     	 return setSalary(readjustment.get(),salary);
-	}
-
-   
+	} 
 
 	public List<Readjustment> getAll() {
         return readjustmentRepository.findAll();
     }
-
-    public void update(final int id, final ReadjustmentDTO readjustmentDTO) {
-       // readjustmentRepository.update(id, getDTOConverter().apply(readjustmentDTO));
-    }
-
-    public void delete(final int id) {
-        //TODO
-    }
-
 	
     private Optional<Readjustment> setSalary(Readjustment readjustment, Double salary) {
 		Double readjustGain = salary * readjustment.getPercent() / 100;
@@ -58,5 +46,4 @@ public class ReadjustmentService {
 		return Optional.of(readjustment);
 	}
 
-  
 }

@@ -7,6 +7,7 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Size;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 
@@ -15,6 +16,7 @@ import lombok.Data;
  * 
  */
 @Data
+@AllArgsConstructor
 public class Jump implements Serializable {
 	private static final long serialVersionUID = 1L;
 

@@ -47,9 +47,11 @@ public class Readjustment implements Serializable {
 	
 	@Column(name="created_at")
 	private Timestamp createdAt;
-	
-	public Readjustment(Long number, String string) {
-		// TODO Auto-generated constructor stub
+
+	public Readjustment(Double minsalary, Double maxsalary, Long percent) {
+		this.minSalary = minsalary;
+		this.maxSalary = maxsalary;
+		this.percent = percent;
 	}
 	
 }

@@ -110,28 +110,5 @@ public class ReadjustmentController {
         return (List<ReadjustmentDTO>)Converter.toCollection(readjustmentService.getAll(), ReadjustmentDTO.class);
     }
 
-    /**
-     * Updates the {@link Product} with the specified ID with the details from the referenced {@link Product}
-     *
-     * @return a {@link ResponseEntity} with the appropriate {@link HttpStatus}
-     
-    @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> update(@PathVariable final int id, @RequestBody ProductDTO readjustmentDTO) {
-        readjustmentService.update(id, readjustmentDTO);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
-*/
-    /**
-     * Deletes the {@link Readjustment} with the specified ID
-     *
-     * @return a {@link ResponseEntity} with the appropriate {@link HttpStatus}
-     */
-    @RequestMapping(
-            method = RequestMethod.DELETE,
-            path = "/{id}"
-    )
-    public ResponseEntity<HttpStatus> delete(@PathVariable final int id) {
-        readjustmentService.delete(id);
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
+
 }
