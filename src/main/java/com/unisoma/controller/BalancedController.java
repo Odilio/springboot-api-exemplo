@@ -36,7 +36,7 @@ public class BalancedController {
      */
     @RequestMapping(
             method = RequestMethod.POST,
-            path = "/balanced/{expressions}"
+            path = "/balanced"
     )
     public ResponseEntity<List<String>> getResult(@Valid @RequestBody List<@Size(min = 1, max = 1000)String> expressions) {
     	List<String> prod = balancedService.getBalanced(expressions);

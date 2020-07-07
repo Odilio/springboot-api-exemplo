@@ -2,7 +2,7 @@ package com.unisoma.controller;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -24,9 +24,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.web.servlet.MockMvc;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unisoma.model.Jump;
 import com.unisoma.model.Result;
 import com.unisoma.model.dto.JumpDTO;
@@ -44,7 +46,7 @@ public class JumpControllerTest {
     private MockMvc mockMvc;  
     
     @Autowired
-    private TestRestTemplate restTemplate;
+    private ObjectMapper objectMapper;
 
     @Mock
     JumpService service;
@@ -80,8 +82,8 @@ public class JumpControllerTest {
     	notes2 = List.of(10.0,5.0,8.0, 9.0, 6.0,5.4, 7.1);
     	notes3 = List.of(10.0,5.0,8.0, 9.0, 6.0);
 
-    	jump1 = new Jump("Gabriela", 2.0, notes, 0.0);
-    	jump2 = new Jump("Camila", 3.0, notes2, 0.0);
+    	jump1 = new Jump("Gabi", 2.0, notes, 0.0);
+    	jump2 = new Jump("Julia", 3.0, notes2, 0.0);
     	jump3 = new Jump("Rafaela", 3.0, notes3, 0.0);
     	
     	jumpDto = new JumpDTO("Gabriela", 71.0);
@@ -96,29 +98,26 @@ public class JumpControllerTest {
     }
     
     @Test
-    @DisplayName("Test Controller Jump get by salary 400 Unit Mock Service ")
-    public void getJumpBySalary400Unit() throws Exception {
+    @DisplayName("Test Controller Jump success ")
+    public void getJumpSuccess() throws Exception {
 
-        Double salary = 400.00;
-        
         Mockito.when(service.getResults(jumps)).thenReturn(Optional.of(result));
-        this.mockMvc.perform(get("/readjustment/jump/{salary}", salary))
+        this.mockMvc.perform(post("/jump/resuts").contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(objectMapper.writeValueAsString(jumps)))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.newSalary", is("460,00")))
-                .andExpect(jsonPath("$.readjustment", is("60,00")));
+                .andExpect(jsonPath("$.results[0].name", is("Gabi")))
+                .andExpect(jsonPath("$.results[0].result", is(71.0)));
     }
     
     @Test
-    @DisplayName("Test Controller Jump get by salary 800 Unit Mock Service ")
-    public void getJumpBySalary800Unit() throws Exception {
+    @DisplayName("Test Controller Jump validation failed")
+    public void getJumpFailed() throws Exception {
 
-        Double salary = 800.00;
-        
-        Mockito.when(service.getResults(jumps)).thenReturn(Optional.of(result));
-        this.mockMvc.perform(get("/readjustment/jump/{jumps}", salary))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.newSalary", is("896,00")))
-                .andExpect(jsonPath("$.readjustment", is("96,00")));
+        Mockito.when(service.getResults(jumpsErrorNotes)).thenReturn(Optional.of(result));
+        this.mockMvc.perform(post("/jump/resuts").contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content(objectMapper.writeValueAsString(jumpsErrorNotes)))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.message", is("getResult.jumps[0].notes: Quantidade de notas informadas deve ser 7")));
     }
 
 }

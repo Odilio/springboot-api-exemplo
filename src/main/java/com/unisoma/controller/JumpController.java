@@ -44,7 +44,7 @@ public class JumpController {
      */
     @RequestMapping(
             method = RequestMethod.POST,
-            path = "/resuts/{jumps}"
+            path = "/resuts"
     )
     public ResponseEntity<Result> getResult(@Valid @RequestBody List<Jump> jumps) {
     	Optional<Result> prod = jumpService.getResults(jumps);
